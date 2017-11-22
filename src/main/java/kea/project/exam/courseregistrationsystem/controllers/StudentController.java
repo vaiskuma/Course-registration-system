@@ -2,7 +2,7 @@ package kea.project.exam.courseregistrationsystem.controllers;
 
 
 import kea.project.exam.courseregistrationsystem.model.Student;
-import kea.project.exam.courseregistrationsystem.model.StudentRepository;
+import kea.project.exam.courseregistrationsystem.persistence.StudentRepository;
 import kea.project.exam.courseregistrationsystem.model.StudyProgramme;
 import kea.project.exam.courseregistrationsystem.persistence.StudyProgrammeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
