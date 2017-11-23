@@ -76,9 +76,6 @@ public class Student {
         this.studyProgramme = studyProgramme;
     }
 
-
-
-
 //    public static Student getStudentById(int id){
 //        List<Student> list = Student.getStudentList();
 //

@@ -27,9 +27,35 @@ public class Course {
     private String content;
     private String learningActivities;
     private String examForm;
+    private String mandatoryvalue;
+    private String courseLanuageValue;
     @ManyToMany
     private List<Teacher> teachers;
 
+
+    public String getMandatoryvalue() {
+        return mandatoryvalue;
+    }
+
+    public void setMandatoryvalue(String mandatoryvalue) {
+        this.mandatoryvalue = mandatoryvalue;
+    }
+
+    public String getCourseLanuageValue() {
+        return courseLanuageValue;
+    }
+
+    public void setCourseLanuageValue(String courseLanuageValue) {
+        this.courseLanuageValue = courseLanuageValue;
+    }
+
+//    public Teacher getTeacher() {
+//        return teacher;
+//    }
+//
+//    public void setTeacher(Teacher teacher) {
+//        this.teacher = teacher;
+//    }
 
     public Integer getId() {
         return id;

@@ -39,22 +39,49 @@ public class CourseController {
 
         return mv;
     }
-    
-    @RequestMapping("/courses")
-     public ModelAndView showCoursesList(){
+
+    @RequestMapping("/courses/{courseId}/editcoursedetails")
+    public ModelAndView editcourses (@PathVariable int courseId){
+
+        Course course= courseRepository.findById(courseId);
         Iterable<Course> courseIterable = courseRepository.findAll();
-        ModelAndView mv = new ModelAndView("courses");
+        Iterable<StudyProgramme> studyProgrammeIterable = studyProgrammeRepository.findAll();
+        Iterable<Teacher> teacherIterable = teacherRepository.findAll();
+        ModelAndView mv = new ModelAndView("editablecourses");
+        mv.getModel().put("programmes", studyProgrammeIterable);
+        mv.getModel().put("courses", courseIterable);
+        mv.getModel().put("course", course);
+        mv.getModel().put("teachers", teacherIterable);
+        return mv;
+}
+
+
+
+   @RequestMapping("/courses/{courseId}/details")
+    public ModelAndView showCourseDetails(@PathVariable int courseId){
+               System.out.println("ID is "+courseId);
+          Course course= courseRepository.findById(courseId);
+       System.out.println(course.getTeachers());
+//       Iterable<Teacher> teacherIterable = teacherRepository.findAll();
+       Iterable<Course> courseIterable = courseRepository.findAll();
+
+
+          ModelAndView mv = new ModelAndView("coursedetails");
+          mv.getModel().put("courses", courseIterable);
+          mv.getModel().put("course", course);
+//          mv.getModel().put("teachers", teacherIterable);
+          return mv;
+      }
+
+    @RequestMapping("/courses")
+    public ModelAndView showCoursesList(){
+        Iterable<Course> courseIterable = courseRepository.findAll();
+
+
+        ModelAndView mv = new ModelAndView("courselist");
         mv.getModel().put("courses", courseIterable);
         return mv;
-        }
-
-      @ResponseBody
-   @RequestMapping("/courses/{courseId}/details")
-    String showCourseDetails(@PathVariable int courseId){
-               System.out.println("ID is "+courseId);
-              return "Dynamic URI parameter fetched: " + courseId;
-         }
-
+    }
 
     @RequestMapping("/save")
     public ModelAndView saveNewCourse(
@@ -124,10 +151,13 @@ public class CourseController {
 
         Iterable<Teacher> teacherIterable = teacherRepository.findAll();
         Iterable<StudyProgramme> studyProgrammeIterable = studyProgrammeRepository.findAll();
+        Iterable<Course> courseIterable = courseRepository.findAll();
 
-        ModelAndView mv = new ModelAndView("courseForm");
+        ModelAndView mv = new ModelAndView("courselist");
+        System.out.println();
         mv.getModel().put("teachers", teacherIterable);
         mv.getModel().put("programmes", studyProgrammeIterable);
+        mv.getModel().put("courses", courseIterable);
 
         return mv;
 
