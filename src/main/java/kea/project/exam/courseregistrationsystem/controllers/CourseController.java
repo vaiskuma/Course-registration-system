@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class CourseController {
@@ -44,6 +47,7 @@ public class CourseController {
     public ModelAndView editcourses (@PathVariable int courseId){
 
         Course course= courseRepository.findById(courseId);
+        course.setEdited(true);
         Iterable<Course> courseIterable = courseRepository.findAll();
         Iterable<StudyProgramme> studyProgrammeIterable = studyProgrammeRepository.findAll();
         Iterable<Teacher> teacherIterable = teacherRepository.findAll();
@@ -59,9 +63,9 @@ public class CourseController {
 
    @RequestMapping("/courses/{courseId}/details")
     public ModelAndView showCourseDetails(@PathVariable int courseId){
-               System.out.println("ID is "+courseId);
+//               System.out.println("ID is "+courseId);
           Course course= courseRepository.findById(courseId);
-       System.out.println(course.getTeachers());
+//       System.out.println(course.getTeachers());
 //       Iterable<Teacher> teacherIterable = teacherRepository.findAll();
        Iterable<Course> courseIterable = courseRepository.findAll();
 
@@ -72,6 +76,22 @@ public class CourseController {
 //          mv.getModel().put("teachers", teacherIterable);
           return mv;
       }
+
+    @RequestMapping ("/courses/delete")
+    public ModelAndView deleteCourses (@RequestParam Map<String, String> queryMap){
+        Set<String> selectedCourses = queryMap.keySet();
+
+
+
+        System.out.println(selectedCourses);
+        for (String key: selectedCourses) {
+            courseRepository.delete(Integer.parseInt(key));
+        }
+        Iterable<Course> courseIterable = courseRepository.findAll();
+                ModelAndView mv = new ModelAndView("courselist");
+        mv.getModel().put("courses", courseIterable);
+        return mv;
+    }
 
     @RequestMapping("/courses")
     public ModelAndView showCoursesList(){
@@ -120,10 +140,14 @@ public class CourseController {
                     String examForm,
             @RequestParam(name = "teachers", defaultValue = "NO_NAME", required = true)
                     List<Integer> teachers
+
     ){
         System.out.println("saving new course here. english is: "+courseLanguage+" mandatory is: "+mandatory);
 
         Course newCourse = new Course();
+//        if(newCourse.isEdited()==true){
+//            newCourse.setId(courseId);
+//        }
         newCourse.setTitleEnglish(titleEnglish);
         newCourse.setTitleDanish(titleDanish);
         newCourse.setSemester(semester);
